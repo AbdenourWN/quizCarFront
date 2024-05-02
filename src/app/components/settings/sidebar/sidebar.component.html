@@ -1,0 +1,92 @@
+<div class="min-[350px]:text-xl text-lg flex flex-col font-bold justify-between h-full bg-[#E6E6E6]">
+    <div class="mx-auto flex flex-col  gap-2 mt-4 h-full">
+        @if(user?.role?.role==="admin"){<li
+            [className]="'flex py-3 min-[350px]:w-48 w-40 rounded-xl px-4' + (getUrl() === '/settings' ? ' bg-[#FCC822]' : '')">
+            <div class="flex gap-2 items-center hover:translate-x-1.5 hover:duration-200 hover:ease-in-out">
+                <img src="assets/dashboard.png" class="w-fit h-fit" alt="">
+                <a [routerLink]="['/settings']">Dashboard</a>
+            </div>
+        </li>}
+        <li
+            [className]="'flex py-3 min-[350px]:w-48 w-40 rounded-xl px-4' + (getUrl() === '/settings/settings' ? ' bg-[#FCC822]' : '')">
+            <div class="flex gap-2 items-center hover:translate-x-1.5 hover:duration-200 hover:ease-in-out">
+
+                <img src="assets/setting.png" class="w-fit h-fit" alt="">
+                <a [routerLink]="['/settings/settings']">Settings</a>
+            </div>
+        </li>
+        @if(permissions?.user?.Post || permissions?.user?.Patch || permissions?.user?.Delete){<li
+            [className]="'flex py-3 min-[350px]:w-48 w-40 rounded-xl px-4' + (getUrl() === '/settings/users' ? ' bg-[#FCC822]' : '')">
+            <div class="flex gap-2 items-center hover:translate-x-1.5 hover:duration-200 hover:ease-in-out">
+
+                <img src="assets/user.png" class="w-fit h-fit" alt="">
+                <a [routerLink]="['/settings/users']">Users</a>
+            </div>
+        </li>}
+        @if(permissions?.brand?.Post || permissions?.brand?.Patch || permissions?.brand?.Delete){<li
+            [className]="'flex py-3 min-[350px]:w-48 w-40 rounded-xl px-4' + (getUrl() === '/settings/brands' ? ' bg-[#FCC822]' : '')">
+            <div class="flex gap-2 items-center hover:translate-x-1.5 hover:duration-200 hover:ease-in-out">
+
+                <img src="assets/brand.png" class="w-fit h-fit" alt="">
+                <a [routerLink]="['/settings/brands']">Brands</a>
+            </div>
+        </li>}
+        @if(permissions?.model?.Post || permissions?.model?.Patch || permissions?.model?.Delete){<li
+            [className]="'flex py-3 min-[350px]:w-48 w-40 rounded-xl px-4' + (getUrl() === '/settings/models' ? ' bg-[#FCC822]' : '')">
+            <div class="flex gap-2 items-center hover:translate-x-1.5 hover:duration-200 hover:ease-in-out">
+
+                <img src="assets/model.png" class="w-fit h-fit" alt="">
+                <a [routerLink]="['/settings/models']">Models</a>
+            </div>
+        </li>}
+        @if(permissions?.version?.Post || permissions?.version?.Patch || permissions?.version?.Delete){<li
+            [className]="'flex py-3 min-[350px]:w-48 w-40 rounded-xl px-4' + (getUrl() === '/settings/versions' ? ' bg-[#FCC822]' : '')">
+            <div class="flex gap-2 items-center hover:translate-x-1.5 hover:duration-200 hover:ease-in-out">
+
+                <img src="assets/version.png" class="w-fit h-fit" alt="">
+                <a [routerLink]="['/settings/versions']">Versions</a>
+            </div>
+        </li>}
+        <li
+            [className]="'flex py-3 min-[350px]:w-48 w-40 rounded-xl px-4' + (getUrl() === '/settings/quizzes' ? ' bg-[#FCC822]' : '')">
+            <div class="flex gap-2 items-center hover:translate-x-1.5 hover:duration-200 hover:ease-in-out">
+
+                <img src="assets/quiz.png" class="w-fit h-fit" alt="">
+                <a [routerLink]="['/settings/quizzes']">Quizzes</a>
+            </div>
+        </li>
+        @if(user?.role?.role==="admin"){<li
+            [className]="'flex py-3 min-[350px]:w-48 w-40 rounded-xl px-4' + (getUrl() === '/settings/questions' ? ' bg-[#FCC822]' : '')">
+            <div class="flex gap-2 items-center hover:translate-x-1.5 hover:duration-200 hover:ease-in-out">
+
+                <img src="assets/question.png" class="w-fit h-fit" alt="">
+                <a [routerLink]="['/settings/questions']">Questions</a>
+            </div>
+        </li>}
+        @if(user?.role?.role==="admin"){<li
+            [className]="'flex py-3 min-[350px]:w-48 w-40 rounded-xl px-4' + (getUrl() === '/settings/features' ? ' bg-[#FCC822]' : '')">
+            <div class="flex gap-2 items-center hover:translate-x-1.5 hover:duration-200 hover:ease-in-out">
+
+                <img src="assets/feature.png" class="w-fit h-fit" alt="">
+                <a [routerLink]="['/settings/features']">Features</a>
+            </div>
+        </li>}
+        @if(user?.role?.role==="admin"){<li
+            [className]="'flex py-3 min-[350px]:w-48 w-40 rounded-xl px-4' + (getUrl() === '/settings/permissions' ? ' bg-[#FCC822]' : '')">
+            <div class="flex gap-2 items-center hover:translate-x-1.5 hover:duration-200 hover:ease-in-out">
+
+                <img src="assets/lock.png" class="w-fit h-fit" alt="">
+                <a [routerLink]="['/settings/permissions']">Permissions</a>
+            </div>
+        </li>}
+        @if(permissions?.role?.Post || permissions?.role?.Patch || permissions?.role?.Delete){<li
+            [className]="'flex py-3 min-[350px]:w-48 w-40 rounded-xl px-4' + (getUrl() === '/settings/roles' ? ' bg-[#FCC822]' : '')">
+            <div class="flex gap-2 items-center hover:translate-x-1.5 hover:duration-200 hover:ease-in-out">
+
+                <img src="assets/role.png" class="w-fit h-fit" alt="">
+                <a [routerLink]="['/settings/roles']">Roles</a>
+            </div>
+        </li>}
+    </div>
+    <img src="assets/snakeLine.png" class="min-[350px]:w-72 w-52" alt="">
+</div>

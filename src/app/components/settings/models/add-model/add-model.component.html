@@ -1,0 +1,56 @@
+<mat-dialog-content style="max-height: fit-content;">
+    <form class="flex flex-col gap-7 items-center py-1 w-96" [formGroup]="modelForm">
+        <span class="text-black font-extrabold text-xl w-full">
+            {{data ? "Update Model":"Create Model"}}
+        </span>
+        <div class="flex flex-col w-full gap-3 px-5">
+            <div class="relative border border-[#C1BBBB] w-full rounded-lg">
+                <select class="text-sun outline-none w-full sm:p-4 p-2" name="role" id="role" required
+                    formControlName="brand">
+                    @if(!data) {<option value="" class="text-gray-400 font-normal" disabled [selected]="true">Brand
+                    </option>}
+                    @for (brand of brands; track $index) {
+                    <option [id]="$index" [value]="brand._id" [selected]="data && data.brand===brand._id">
+                        {{brand.brand}}</option>
+                    }
+                </select>
+            </div>
+            @if (error || (modelForm.get('brand')?.invalid && (modelForm.get('brand')?.dirty ||
+            modelForm.get('brand')?.touched))) {
+            <div class="text-red-600 text-sm">
+                @if (modelForm.get('brand')?.hasError('required')) {<small>
+                    This field is required.
+                </small>}
+            </div>}
+            <div class="relative border border-[#C1BBBB] w-full rounded-lg">
+                <input type="text" id="model"
+                    class="block px-2.5 pb-2.5 pt-5 w-full font-semibold text-lg focus:border-l-2 focus:border-[#fcc822] appearance-none focus:outline-none focus:ring-0 peer text-sun rounded-lg"
+                    placeholder=" " formControlName="model" />
+                <label for="model"
+                    class="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto cursor-text">Model
+                    Name</label>
+            </div>
+            @if (error || (modelForm.get('model')?.invalid && (modelForm.get('model')?.dirty ||
+            modelForm.get('model')?.touched))) {
+            <div class="text-red-600 text-sm">
+                @if (modelForm.get('model')?.hasError('required')) {<small>
+                    This field is required.
+                </small>}
+            </div>}
+            @if(showError){<div class="border rounded-md mt-8 border-red-500 bg-red-100 text-red-500 p-3 text-sm">
+                {{errorMsg}}
+            </div>}
+
+            <div class="flex gap-20 font-bold mx-auto mt-5">
+                <button (click)="$event.preventDefault(); handleModel()" type="submit" class="btn-fill-sun my-auto"
+                    style="padding-top: 10px;padding-bottom: 10px;">
+                    {{data ? "Update":"Create"}}
+                </button>
+                <button (click)="$event.preventDefault(); this.dialog.closeAll()" type="submit"
+                    class="btn-fill-black my-auto" style="padding-top: 10px;padding-bottom: 10px;">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>

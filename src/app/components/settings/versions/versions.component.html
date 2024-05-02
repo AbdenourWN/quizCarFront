@@ -1,0 +1,69 @@
+<div class="flex flex-col justify-between sm:gap-20 gap-5 pr-3">
+    <div class="@container mx-auto flex sm:flex-row flex-col xl:w-[1000px] w-full justify-between gap-10 items-center">
+        <div class="flex @xl:w-96 relative border border-[#C1BBBB] rounded-full mx-auto justify-self-center">
+            <input type="text" id="search" [(ngModel)]="searchBar"
+                class="block px-2.5 pb-2.5 pt-5 w-full font-semibold @sm:text-lg focus:border-l-2 focus:border-[#fcc822] rounded-full appearance-none focus:outline-none focus:ring-0 peer text-sun"
+                placeholder=" " (input)="filterByName()" />
+            <label for="search"
+                class="absolute sm:text-base text-sm text-gray-300 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto cursor-text">Search
+            </label>
+            <button class="px-2 cursor-default"><img src="assets/search.png" class="w-fit h-fit" alt=""></button>
+        </div>
+        @if(permissions?.Post){<button
+            class="btn-fill-sun font-bold rounded-lg @xl:text-lg h-fit my-auto w-fit sm:order-none -order-1 text-nowrap"
+            (click)="openCreateVersion()">
+            Add Version +
+        </button>}
+    </div>
+    <div class="xl:w-[1000px] w-full mx-auto h-full bg-white p-5 rounded-xl"
+        style="box-shadow: 0px 5px 5px -3px rgba(165, 146, 146, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12); overflow-x: auto !important;">
+        <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
+            class="mat-elevation-z8" style="box-shadow: none;">
+            <!-- Position Column -->
+            <ng-container matColumnDef="_id">
+                <th *matHeaderCellDef mat-sort-header sortActionDescription="Sort by _id">
+                    ID
+                </th>
+                <td mat-cell *matCellDef="let element"> {{element._id}} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="model">
+                <th *matHeaderCellDef mat-sort-header sortActionDescription="Sort by model">
+                    Model
+                </th>
+                <td mat-cell *matCellDef="let element"> {{element.model}} </td>
+            </ng-container>
+            <ng-container matColumnDef="version">
+                <th *matHeaderCellDef mat-sort-header sortActionDescription="Sort by version">
+                    Version
+                </th>
+                <td mat-cell *matCellDef="let element"> {{element.version}} </td>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="actions">
+                <th *matHeaderCellDef>
+                    Actions
+                </th>
+                <td mat-cell *matCellDef="let element" class="flex-1 justify-center items-center">
+                    <div class=" w-full h-full flex justify-center gap-2">
+                        @if(permissions?.Patch){ <button (click)="openUpdateVersion(element)">
+                            <img src="assets/edit.png" alt="edit">
+                        </button>}
+                        @if(permissions?.Delete){<button (click)="openDeleteVersion(element)">
+                            <img src="assets/delete.png" alt="delete">
+                        </button>}
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+    <mat-paginator class="container mx-auto xl:w-[1000px] mt-10 sm:mt-0" [length]="length" [pageSize]="pageSize"
+        [pageSizeOptions]="[5, 10, 25, 100]" [pageIndex]="index" (page)="pageEvent=filterVersions($event)"
+        aria-label="Select page">
+    </mat-paginator>
+</div>

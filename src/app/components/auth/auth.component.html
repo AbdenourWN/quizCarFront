@@ -1,0 +1,10 @@
+<div class="lg:grid lg:grid-cols-2 flex h-full justify-center items-center w-full">
+    @if (switch==="login") {<app-login class="w-full" [changePage]="changePage"></app-login>}
+    @else if(switch==="signup"){
+    <sign-up class="w-full lg:translate-x-full" [changePage]="changePage" ></sign-up>
+    }
+    <div
+        [className]="switch ==='login' ? 'bg-[#fafafa] h-full items-center lg:flex hidden transform transition-transform duration-500 ease-in-out' :'bg-[#fafafa] h-full items-center lg:flex hidden transform transition-transform duration-500 ease-in-out -translate-x-full'">
+        <img src="assets/car.png" class="mx-auto" alt="">
+    </div>
+</div>

@@ -1,0 +1,7 @@
+@if (quizPage===1) {
+<start-quiz (quiz)="quiz=$event" [(quizPage)]="quizPage"></start-quiz>
+}
+@else if (quizPage===2) {
+<questions [(quizPage)]="quizPage" [quiz]="quiz">
+</questions>
+}

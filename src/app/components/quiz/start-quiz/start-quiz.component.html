@@ -1,0 +1,36 @@
+<div class="flex flex-col gap-6 h-full justify-center w-fit sm:items-start items-center sm:text-start text-center mt-3">
+    <p class="font-bold min-[400px]:text-6xl text-4xl my-3 ">Choose type of Quiz</p>
+    <div class="flex flex-col min-[400px]:text-xl text-lg">
+        <span>
+            <span class="text-sun font-bold mr-2">Fast: </span> 7 Questions
+        </span>
+        <span>
+            <span class="text-sun font-bold mr-2">Slow: </span> 17 Questions
+        </span>
+    </div>
+    <form class="w-full mt-10" (ngSubmit)="onSubmit()">
+        <div class="relative border border-[#C1BBBB]">
+            <input type="text" id="quizName"
+                class="block px-2.5 pb-2.5 pt-5 w-full font-semibold min-[400px]:text-lg focus:border-l-2 focus:border-[#fcc822] appearance-none focus:outline-none focus:ring-0 peer text-sun"
+                placeholder=" " [formControl]="quizName" />
+            <label for="quizName"
+                class="absolute min-[400px]:text-base text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto cursor-text">Quiz
+                Name</label>
+
+        </div>
+        @if (showError || (quizName.invalid && (quizName.dirty ||
+        quizName.touched))) {
+        <div class="text-red-600 text-sm">
+            @if (quizName.hasError('required')) {<small>
+                This field is required.
+            </small>}
+        </div>}
+        <div class="flex gap-8 mt-16 min-[400px]:text-xl text-lg font-semibold sm:justify-start justify-center">
+            <span (click)="changeType($event)" id="Slow"
+                [className]="type ==='Slow' ? 'bg-[#fcc822] px-10 py-2 cursor-pointer':'bg-gray-400 px-10 py-2 cursor-pointer'">Slow</span>
+            <span (click)="changeType($event)" id="Fast"
+                [className]="type ==='Fast' ? 'bg-[#fcc822] px-10 py-2 cursor-pointer':'bg-gray-400 px-10 py-2 cursor-pointer'">Fast</span>
+        </div>
+        <button type="submit" class="btn-fill-sun min-[400px]:text-2xl text-xl mt-16">Start Quiz</button>
+    </form>
+</div>

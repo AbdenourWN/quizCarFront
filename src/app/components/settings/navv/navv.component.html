@@ -1,0 +1,20 @@
+<nav
+    class="flex justify-between items-center sm:p-8 p-4 border-b border-b-[#ECECE8] sm:text-xl text-sm font-bold sm:font-normal gap-3">
+    <div class="flex sm:gap-10 gap-3">
+        <button (click)="toggleSideBar()">
+            <img src="assets/sidebar.png" alt="">
+        </button>
+        <a routerLink="">
+            <img src="assets/logo.png" alt="logo">
+        </a>
+    </div>
+    <div class="flex items-center sm:gap-10 gap-3 sm:font-medium font-bold">
+        @if(authenticated){<a [routerLink]="'/Login'" class="btn-sun">
+            Login
+        </a>}
+        @else{
+        <profile></profile>
+        }
+
+    </div>
+</nav>

@@ -1,0 +1,101 @@
+<mat-dialog-content style="max-height: fit-content;">
+    <form class="flex flex-col gap-7 items-center py-1 w-96" [formGroup]="userForm">
+        <span class="text-black font-extrabold text-xl w-full">
+            {{data ? "Update User":"Create User"}}
+        </span>
+        <div class="flex flex-col w-full gap-3 px-5">
+            <div class="relative border border-[#C1BBBB] w-full rounded-lg">
+                <input type="text" id="fullName"
+                    class="block px-2.5 pb-2.5 pt-5 w-full font-semibold text-lg focus:border-l-2 focus:border-[#fcc822] appearance-none focus:outline-none focus:ring-0 peer text-sun rounded-lg"
+                    placeholder=" " formControlName="fullName" />
+                <label for="fullName"
+                    class="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto cursor-text">Full
+                    Name</label>
+            </div>
+            @if (error || (userForm.get('fullName')?.invalid && (userForm.get('fullName')?.dirty ||
+            userForm.get('fullName')?.touched))) {
+            <div class="text-red-600 text-sm">
+                @if (userForm.get('fullName')?.hasError('required')) {<small>
+                    This field is required.
+                </small>}
+            </div>}
+            <div class="relative border border-[#C1BBBB] w-full rounded-lg">
+                <input type="email" id="email" required
+                    class="block px-2.5 pb-2.5 pt-5 w-full font-semibold text-lg focus:border-l-2 focus:border-[#fcc822] appearance-none focus:outline-none focus:ring-0 peer text-sun rounded-lg"
+                    placeholder=" " formControlName="email" />
+                <label for="email"
+                    class="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto cursor-text">Email
+                    Address</label>
+
+            </div>
+            @if (!data &&( error || (userForm.get('email')?.invalid && (userForm.get('email')?.dirty ||
+            userForm.get('email')?.touched)))) {
+            <div class="text-red-600 text-sm">
+                @if (userForm.get('email')?.hasError('required')) {<small>
+                    This field is required.
+                </small>}
+                @if (userForm.get('email')?.hasError('email')) {<small class="text-danger">
+                    Please enter a correct email!
+                </small>}
+
+            </div>}
+            <div class="relative border border-[#C1BBBB] w-full rounded-lg text-lg font-bold">
+                <select class="text-sun outline-none w-full sm:p-4 p-2" name="role" id="role" required
+                    formControlName="role">
+                    @if(!data) {<option value="" class="text-gray-400 font-normal" disabled [selected]="true">Role
+                    </option>}
+                    @for (role of roles; track $index) {
+                    <option [id]="$index" [value]="role._id" [selected]="data && data.role===role._id">
+                        {{role.role}}</option>
+                    }
+                </select>
+            </div>
+            @if (!data && (error || (userForm.get('role')?.invalid && (userForm.get('role')?.dirty ||
+            userForm.get('role')?.touched)))) {
+            <div class="text-red-600 text-sm">
+                @if (userForm.get('role')?.hasError('required') || userForm.value.role==="Role") {<small>
+                    This field is required.
+                </small>}
+            </div>}
+            @if(data){
+            <div class="flex gap-3 items-center checkbox-wrapper-13">
+                <input (change)="togglePassword()" type="checkbox" name="pass" id="pass">
+                <label for="pass"> update Password ? </label>
+            </div>
+            }
+            @if((data&& updatePass)|| !data){<div class="relative border border-[#C1BBBB] w-full rounded-lg">
+                <input type="password" id="password"
+                    class="block px-2.5 pb-2.5 pt-5 w-full font-semibold text-lg focus:border-l-2 focus:border-[#fcc822] appearance-none focus:outline-none focus:ring-0 peer text-sun rounded-lg"
+                    placeholder=" " formControlName="password" />
+                <label for="password"
+                    class="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto cursor-text">{{data
+                    ? "New Password":"Password"}}</label>
+            </div>
+            @if (error || (userForm.get('password')?.invalid && (userForm.get('password')?.dirty ||
+            userForm.get('password')?.touched))) {
+            <div class="text-red-600 text-sm">
+                @if (userForm.get('password')?.hasError('required')) {<small>
+                    This field is required.
+                </small>}
+                @if (userForm.get('password')?.hasError('minlength')) {<small class="text-danger">
+                    Password must be at least 8 characters!
+                </small>}
+            </div>
+            }}
+            @if(showError){<div class="border rounded-md mt-8 border-red-500 bg-red-100 text-red-500 p-3 text-sm">
+                {{errorMsg}}
+            </div>}
+
+            <div class="flex gap-20 font-bold mx-auto mt-5">
+                <button (click)="$event.preventDefault(); handleUser()" type="submit"
+                    class="btn-fill-sun my-auto" style="padding-top: 10px;padding-bottom: 10px;">
+                    {{data ? "Update":"Create"}}
+                </button>
+                <button (click)="$event.preventDefault(); this.dialog.closeAll()" type="submit"
+                    class="btn-fill-black my-auto" style="padding-top: 10px;padding-bottom: 10px;">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>

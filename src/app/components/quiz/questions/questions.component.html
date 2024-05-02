@@ -1,0 +1,83 @@
+<div class="h-full max-w-[900px] mx-auto">
+    <mat-stepper [linear]="false" #stepper class="h-full">
+        @for (formGroup of formGroups; track $index) {
+        <mat-step [stepControl]="formGroup">
+            <form [formGroup]="formGroup" class="h-full flex flex-col justify-between gap-3">
+                <div class="w-full h-full flex flex-col gap-6 sm:text-xl">
+                    @for (question of questions.slice($index * 5, ($index + 1) * 5); track $index) {
+                    @if (question.type==="Dropdown") {
+                    <div class="flex flex-col" id={{$index}}>
+                        <label [for]="question.question">{{questions.indexOf(question) +1 }} - {{ question.question
+                            }}</label>
+                        <select matInput [formControlName]="question._id" required
+                            class="border border-[#C1BBBB] text-sun outline-none sm:p-4 p-2 font-bold"
+                            [id]="question.question" (change)="handleChange($event)">
+                            @if (question.question.split(" ").includes("Marque")) {
+                            @for (brand of dropdowns.brand; track $index) {
+                            <option [value]="brand.brand">{{brand.brand}}</option>
+                            }
+                            }
+                            @if (question.question.split(" ").includes("Modele")) {
+                            @for (model of dropdowns.model; track $index) {
+                            <option [value]="model.model">{{model.model}}</option>
+                            }
+                            }@if (question.question.split(" ").includes("Version")) {
+                            @for (version of dropdowns.version; track $index) {
+                            <option [value]="version.version">{{version.version}}</option>
+                            }
+                            }@else {
+                            @for (value of dropdowns.const[question.question]; track $index) {
+                            <option [value]="value">{{value}}</option>
+                            }
+                            }
+                        </select>
+
+                        @if ((showError && !formGroup.get(question._id)?.valid) || (!formGroup.get(question._id)?.valid
+                        && (formGroup.get(question._id)?.dirty ||
+                        formGroup.get(question._id)?.touched))) {
+                        <div class="text-red-600 text-sm"><small>
+                                This field is required.
+                            </small></div>
+                        }
+                    </div>
+                    }
+                    @else {
+                    <div class="flex flex-col" id={{$index}}>
+                        <label [for]="question.question">{{questions.indexOf(question) +1 }} - {{ question.question
+                            }}</label>
+                        <input matInput [formControlName]="question._id" required type={{question.type.toLowerCase()}}
+                            [placeholder]="question.question"
+                            class="border border-[#C1BBBB] text-sun outline-none sm:p-4 p-2 font-bold" [name]="question"
+                            [id]="question.question" />
+                        @if ((showError && !formGroup.get(question._id)?.valid) || (!formGroup.get(question._id)?.valid
+                        && (formGroup.get(question._id)?.dirty ||
+                        formGroup.get(question._id)?.touched))) {
+                        <div class="text-red-600 text-sm"><small>
+                                This field is required.
+                            </small></div>
+                        }
+                    </div>
+                    }
+                    }
+
+                </div>
+                <div class='flex justify-between sm:text-xl'>
+                    @if ($index === 0) {<button class="btn-fill-black flex gap-2 items-center" (click)="goBack()"><img
+                            src="assets/leftBlack.png" alt="">Back</button>}
+                    @if ($index > 0) {<button class="btn-fill-black flex gap-2 items-center" matStepperPrevious><img
+                            src="assets/leftBlack.png" alt=""> Previous</button>}
+                    @if ($index < formGroups.length - 1) {<button class="btn-fill-sun flex gap-2 items-center"
+                        matStepperNext (click)="formGroup.invalid ? enableError():disableError()">Next <img
+                            src="assets/rightWhite.png" alt=""></button>}
+                        @if ($index === formGroups.length - 1){
+                        <button class="btn-fill-sun flex gap-2 items-center"
+                            (click)="formGroup.invalid ? enableError():openDialog()">Done <img
+                                src="assets/rightWhite.png" alt=""></button>
+                        }
+                </div>
+            </form>
+        </mat-step>
+        }
+    </mat-stepper>
+
+</div>

@@ -1,0 +1,15 @@
+<mat-dialog-content style="max-height: fit-content;">
+    <form class="flex flex-col gap-7 items-center justify-center py-1 w-96">
+        <div class="font-bold text-2xl w-full text-center text-black">
+            Are you sure you want to delete<br/> {{data.brand}}
+        </div>
+        <div class="flex gap-14 justify-center items-center w-full font-bold">
+            <button class="btn-fill-sun rounded-lg" style="background-color: rgb(252, 58, 58); box-shadow:none; border: none;" (click)="$event.preventDefault(); deleteBrand()">
+                Delete
+            </button>
+            <button class="btn-fill-black rounded-lg" (click)="$event.preventDefault(); dialog.closeAll()">
+                Cancel
+            </button>
+        </div>
+    </form>
+</mat-dialog-content>

@@ -1,0 +1,105 @@
+<div class="container max-w-[700px] mx-auto">
+    <form action="submit" [formGroup]="userForm" class="@container flex flex-col gap-5 ">
+        <span class="text-black font-extrabold text-xl w-full">
+            {{update ? "Update Setting":"Settings"}}
+        </span>
+        <div class="flex flex-col w-full gap-3 px-5">
+            <div class="relative border border-[#C1BBBB] w-full rounded-lg">
+                <input type="text" id="fullName"
+                    class="block px-2.5 pb-2.5 pt-5 w-full font-semibold text-lg focus:border-l-2 focus:border-[#fcc822] appearance-none focus:outline-none focus:ring-0 peer text-sun rounded-lg"
+                    placeholder=" " formControlName="fullName" />
+                <label for="fullName"
+                    class="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto cursor-text">fullName</label>
+            </div>
+            @if (error || (userForm.get('fullName')?.invalid && (userForm.get('fullName')?.dirty ||
+            userForm.get('fullName')?.touched))) {
+            <div class="text-red-600 text-sm">
+                @if (userForm.get('fullName')?.hasError('required')) {<small>
+                    This field is required.
+                </small>}
+            </div>}
+            <div class="relative border border-[#C1BBBB] w-full rounded-lg">
+                <input type="text" id="email"
+                    class="block px-2.5 pb-2.5 pt-5 w-full font-semibold text-lg focus:border-l-2 focus:border-[#fcc822] appearance-none focus:outline-none focus:ring-0 peer text-sun rounded-lg"
+                    placeholder=" " formControlName="email" />
+                <label for="email"
+                    class="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto cursor-text">Email</label>
+            </div>
+            @if (error || (userForm.get('email')?.invalid && (userForm.get('email')?.dirty ||
+            userForm.get('email')?.touched))) {
+            <div class="text-red-600 text-sm">
+                @if (userForm.get('email')?.hasError('required')) {<small>
+                    This field is required.
+                </small>}
+            </div>}
+            <div class="relative border border-[#C1BBBB] w-full rounded-lg">
+                <input type="text" id="role"
+                    class="block px-2.5 pb-2.5 pt-5 w-full font-semibold text-lg focus:border-l-2 focus:border-[#fcc822] appearance-none focus:outline-none focus:ring-0 peer text-sun rounded-lg"
+                    placeholder=" " formControlName="role" />
+                <label for="role"
+                    class="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto cursor-text">Role</label>
+            </div>
+            @if(update){<div class="flex gap-3 items-center checkbox-wrapper-13">
+                <input (change)="togglePassword()" type="checkbox" name="pass" id="pass">
+                <label for="pass"> update Password ? </label>
+            </div>}
+            @if(updatePass){<div class="relative border border-[#C1BBBB] w-full rounded-lg">
+                <input type="password" id="oldPassword"
+                    class="block px-2.5 pb-2.5 pt-5 w-full font-semibold text-lg focus:border-l-2 focus:border-[#fcc822] appearance-none focus:outline-none focus:ring-0 peer text-sun rounded-lg"
+                    placeholder=" " formControlName="oldPassword" />
+                <label for="oldPassword"
+                    class="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto cursor-text">old Password</label>
+            </div>
+            @if (error || (userForm.get('oldPassword')?.invalid && (userForm.get('oldPassword')?.dirty ||
+            userForm.get('oldPassword')?.touched))) {
+            <div class="text-red-600 text-sm">
+                @if (userForm.get('oldPassword')?.hasError('required')) {<small>
+                    This field is required.
+                </small>}
+                @if (userForm.get('oldPassword')?.hasError('minlength')) {<small class="text-danger">
+                    Password must be at least 8 characters!
+                </small>}
+            </div>
+            }}
+            @if(updatePass){<div class="relative border border-[#C1BBBB] w-full rounded-lg">
+                <input type="password" id="newPassword"
+                    class="block px-2.5 pb-2.5 pt-5 w-full font-semibold text-lg focus:border-l-2 focus:border-[#fcc822] appearance-none focus:outline-none focus:ring-0 peer text-sun rounded-lg"
+                    placeholder=" " formControlName="newPassword" />
+                <label for="newPassword"
+                    class="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto cursor-text">new Password</label>
+            </div>
+            @if (error || (userForm.get('newPassword')?.invalid && (userForm.get('newPassword')?.dirty ||
+            userForm.get('newPassword')?.touched))) {
+            <div class="text-red-600 text-sm">
+                @if (userForm.get('newPassword')?.hasError('required')) {<small>
+                    This field is required.
+                </small>}
+                @if (userForm.get('newPassword')?.hasError('minlength')) {<small class="text-danger">
+                    Password must be at least 8 characters!
+                </small>}
+            </div>
+            }}
+            @if(showError){<div class="border rounded-md mt-8 border-red-500 bg-red-100 text-red-500 p-3 text-sm">
+                {{errorMsg}}
+            </div>}
+
+            @if(update){<div class="flex gap-20 font-bold self-end">
+                <button (click)="$event.preventDefault(); updateUser()" type="submit" class="btn-fill-sun my-auto"
+                    style="padding-top: 10px;padding-bottom: 10px;">
+                    Save
+                </button>
+                <button (click)="$event.preventDefault(); switchUpdate()" type="submit" class="btn-fill-black my-auto"
+                    style="padding-top: 10px;padding-bottom: 10px;">
+                    Cancel
+                </button>
+            </div>}
+            @else {
+            <button (click)="$event.preventDefault(); switchUpdate()" type="submit"
+                class="btn-fill-sun my-auto font-bold w-fit self-end" style="padding-top: 10px;padding-bottom: 10px;">
+                Update
+            </button>
+            }
+        </div>
+    </form>
+
+</div>

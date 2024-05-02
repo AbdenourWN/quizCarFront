@@ -1,0 +1,37 @@
+<mat-dialog-content style="height: fit-content; ">
+    <div class="flex flex-col gap-7 items-center py-1 w-fit h-full overflow-y-auto text-center md:text-start">
+        <div class="flex w-full items-center justify-between">
+            <span class="text-black font-extrabold text-xl w-full leading-none">
+                Quiz Details
+            </span>
+            <button (click)="$event.preventDefault();dialog.closeAll()">
+                <img src="assets/x.png" alt="">
+            </button>
+        </div>
+        <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-7 items-center justify-between w-full px-5">
+            <div class="flex flex-col gap-3 lg:col-span-2">
+                <div class="flex flex-col gap-1">
+                    <span class="font-bold text-gray-700">Quiz Name: </span>
+                    <span> {{data.name}} </span>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <span class="font-bold text-gray-700">Quiz Type: </span>
+                    <span> {{data.type}} </span>
+                </div>
+            </div>
+            <div class="flex flex-col text-center mx-auto md:mx-0 gap-1 w-fit px-7 py-2 text-white rounded-ss-3xl rounded-ee-3xl bg-[#FCC822] border border-[#FCC822]">
+                <span class="font-bold text-xl">Price: </span>
+                <span> {{data.result}} TND </span>
+            </div>
+        </div>
+        <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 w-full gap-7 px-5">
+            @for (quizQuestion of data.quizQuestions; track $index) {
+            <div class="flex flex-col gap-1">
+                <span class="font-bold text-gray-700">{{questions[$index]?.question}}: </span>
+                <span> {{quizQuestion.response}} </span>
+            </div>
+            }
+
+        </div>
+    </div>
+</mat-dialog-content>

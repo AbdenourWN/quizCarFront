@@ -1,0 +1,63 @@
+<mat-dialog-content style="max-height: fit-content;">
+    <form class="flex flex-col gap-7 items-center py-1 w-fit">
+        <span class="text-black font-extrabold text-xl w-full">
+            {{data ? "Update Role":"Create Role"}}
+        </span>
+        <div class="flex flex-col w-full gap-3 px-5">
+            <div class="relative border border-[#C1BBBB] w-full rounded-lg">
+                <input type="text" id="roleName"
+                    class="block px-2.5 pb-2.5 pt-5 w-full font-semibold text-lg focus:border-l-2 focus:border-[#fcc822] appearance-none focus:outline-none focus:ring-0 peer text-sun rounded-lg"
+                    placeholder=" " [formControl]="roleForm" />
+                <label for="roleName"
+                    class="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto cursor-text">Role
+                    Name</label>
+            </div>
+            @if (error || (roleForm.invalid && (roleForm.dirty || roleForm.touched))) {
+            <div class="text-red-600 text-sm">
+                @if (roleForm.hasError('required')) {<small>
+                    This field is required.
+                </small>}
+            </div>}
+
+            @if(!data){<div class="flex flex-col gap-3">
+                @for (feature of features; track $index) {
+                <form class="w-full flex gap-5 justify-between items-center" [formGroup]="featureForms[$index]">
+                    <span class="font-semibold text-lg">{{ feature.feature }}</span>
+                    <div class="flex gap-3 checkbox-wrapper-13">
+                        <label class="flex gap-2">
+                            <input type="checkbox" formControlName="Get" />
+                            Get
+                        </label>
+                        <label class="flex gap-2">
+                            <input type="checkbox" formControlName="Post" />
+                            Post
+                        </label>
+                        <label class="flex gap-2">
+                            <input type="checkbox" formControlName="Patch" />
+                            Patch
+                        </label>
+                        <label class="flex gap-2">
+                            <input type="checkbox" formControlName="Delete" />
+                            Delete
+                        </label>
+                    </div>
+                </form>
+                }
+            </div>}
+            @if(showError){<div class="border rounded-md mt-8 border-red-500 bg-red-100 text-red-500 p-3 text-sm">
+                {{errorMsg}}
+            </div>}
+
+            <div class="flex gap-20 font-bold mx-auto mt-5">
+                <button (click)="$event.preventDefault(); handleRole()" type="submit" class="btn-fill-sun my-auto"
+                    style="padding-top: 10px;padding-bottom: 10px;">
+                    {{data ? "Update":"Create"}}
+                </button>
+                <button (click)="$event.preventDefault(); this.dialog.closeAll()" type="submit"
+                    class="btn-fill-black my-auto" style="padding-top: 10px;padding-bottom: 10px;">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
