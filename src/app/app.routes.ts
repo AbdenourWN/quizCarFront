@@ -17,7 +17,6 @@ import { UsersComponent } from './components/settings/users/users.component';
 import { BrandsComponent } from './components/settings/brands/brands.component';
 import { ModelsComponent } from './components/settings/models/models.component';
 import { QuizzesComponent } from './components/settings/quizzes/quizzes.component';
-import { VersionsComponent } from './components/settings/versions/versions.component';
 import { QuestionsComponent } from './components/settings/questions/questions.component';
 import { FeaturesComponent } from './components/settings/features/features.component';
 import { PermissionsComponent } from './components/settings/permissions/permissions.component';
@@ -105,15 +104,6 @@ export const routes: Routes = [
           ),
         canActivate: [roleGuard],
         data: { service: 'models' },
-      },
-      {
-        path: 'versions',
-        loadComponent: () =>
-          import('./components/settings/versions/versions.component').then(
-            (m) => m.VersionsComponent
-          ),
-        canActivate: [roleGuard],
-        data: { service: 'versions' },
       },
       {
         path: 'quizzes',

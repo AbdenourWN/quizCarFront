@@ -4,7 +4,6 @@ import { MatListModule } from '@angular/material/list';
 import { UserService } from '../../../services/user.service';
 import { BrandService } from '../../../services/brand.service';
 import { ModelService } from '../../../services/model.service';
-import { VersionService } from '../../../services/version.service';
 import { FeatureService } from '../../../services/feature.service';
 import { PermissionService } from '../../../services/permission.service';
 import { QuestionService } from '../../../services/question.service';
@@ -25,7 +24,6 @@ export class SidebarComponent implements OnInit {
     private userService: UserService,
     private brandService: BrandService,
     private modelService: ModelService,
-    private versionService: VersionService,
     private featureService: FeatureService,
     private permissionService: PermissionService,
     private questionService: QuestionService,
@@ -40,9 +38,9 @@ export class SidebarComponent implements OnInit {
   permissions: any = {
     brand: {},
     model: {},
-    version: {},
     quiz: {},
     user: {},
+    role: {},
   };
   ngOnInit(): void {
     this.userService.getUser().subscribe(
@@ -57,10 +55,6 @@ export class SidebarComponent implements OnInit {
     );
     this.modelService.getItsPermission().subscribe(
       (res) => (this.permissions.model = res),
-      (err) => console.log(err)
-    );
-    this.versionService.getItsPermission().subscribe(
-      (res) => (this.permissions.version = res),
       (err) => console.log(err)
     );
     this.roleService.getItsPermission().subscribe(

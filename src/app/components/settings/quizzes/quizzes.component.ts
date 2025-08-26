@@ -21,7 +21,6 @@ import { UserCRUDService } from '../../../services/user-crud.service';
 export interface quiz {
   _id: string;
   name: string;
-  type: string;
   result: string;
   createdBy: string;
   createdByName: string;
@@ -49,7 +48,6 @@ export class QuizzesComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = [
     '_id',
     'name',
-    'type',
     'result',
     'createdBy',
     'actions',
@@ -136,7 +134,6 @@ export class QuizzesComponent implements OnInit, AfterViewInit {
       data: {
         _id: element._id,
         name: element.name,
-        type: element.type,
         result: element.result,
         createdBy: element.createdByName,
         quizQuestions: element.quizQuestions,

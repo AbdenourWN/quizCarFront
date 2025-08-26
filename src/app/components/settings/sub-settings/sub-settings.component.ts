@@ -99,6 +99,8 @@ export class SubSettingsComponent implements OnInit {
           this.userService.setUser();
           this.update = false;
           this.updatePass = false;
+          this.errorMsg = '';
+          this.showError = false;
         },
         (err) => {
           this.errorMsg = err.error.error;
@@ -122,6 +124,8 @@ export class SubSettingsComponent implements OnInit {
       this.userForm.get('fullName')?.disable();
       this.userForm.get('email')?.disable();
       this.updatePass = false;
+      this.errorMsg = '';
+      this.showError = false;
     }
   }
 }

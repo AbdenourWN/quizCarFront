@@ -6,7 +6,6 @@ import { UserService } from '../services/user.service';
 import { UserCRUDService } from '../services/user-crud.service';
 import { BrandService } from '../services/brand.service';
 import { ModelService } from '../services/model.service';
-import { VersionService } from '../services/version.service';
 import { RoleService } from '../services/role.service';
 
 export const QuizGuard: CanActivateFn = (route, state) => {
@@ -59,9 +58,6 @@ export const roleGuard: CanActivateFn = (route, state) => {
       break;
     case 'models':
       service = inject(ModelService);
-      break;
-    case 'versions':
-      service = inject(VersionService);
       break;
     case 'roles':
       service = inject(RoleService);

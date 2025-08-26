@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BrandService } from '../../../services/brand.service';
 import { ModelService } from '../../../services/model.service';
-import { VersionService } from '../../../services/version.service';
 import { FeatureService } from '../../../services/feature.service';
 import { PermissionService } from '../../../services/permission.service';
 import { QuestionService } from '../../../services/question.service';
@@ -20,7 +19,6 @@ export class DashboardComponent implements OnInit {
   constructor(
     private brandService: BrandService,
     private modelService: ModelService,
-    private versionService: VersionService,
     private featureService: FeatureService,
     private permissionService: PermissionService,
     private questionService: QuestionService,
@@ -32,7 +30,6 @@ export class DashboardComponent implements OnInit {
     { type: 'Users', num: 0 },
     { type: 'Brands', num: 0 },
     { type: 'Models', num: 0 },
-    { type: 'Versions', num: 0 },
     { type: 'Features', num: 0 },
     { type: 'Permissions', num: 0 },
     { type: 'Questions', num: 0 },
@@ -43,7 +40,6 @@ export class DashboardComponent implements OnInit {
     this.userCRUDService.getUsers();
     this.brandService.getBrands();
     this.modelService.getModels();
-    this.versionService.getVersions();
     this.permissionService.getPermissions();
     this.quizService.getQuizzes();
     this.roleService.getRoles();
@@ -65,12 +61,6 @@ export class DashboardComponent implements OnInit {
     this.modelService.watch().subscribe(
       (res: any) => {
         this.data[2].num = res.length;
-      },
-      (err) => console.log(err)
-    );
-    this.versionService.watch().subscribe(
-      (res: any) => {
-        this.data[3].num = res.length;
       },
       (err) => console.log(err)
     );

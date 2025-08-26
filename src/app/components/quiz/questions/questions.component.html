@@ -2,8 +2,8 @@
     <mat-stepper [linear]="false" #stepper class="h-full">
         @for (formGroup of formGroups; track $index) {
         <mat-step [stepControl]="formGroup">
-            <form [formGroup]="formGroup" class="h-full flex flex-col justify-between gap-3">
-                <div class="w-full h-full flex flex-col gap-6 sm:text-xl">
+            <form [formGroup]="formGroup" class="flex flex-col justify-between h-full gap-3">
+                <div class="flex flex-col w-full h-full gap-6 sm:text-xl">
                     @for (question of questions.slice($index * 5, ($index + 1) * 5); track $index) {
                     @if (question.type==="Dropdown") {
                     <div class="flex flex-col" id={{$index}}>
@@ -21,10 +21,6 @@
                             @for (model of dropdowns.model; track $index) {
                             <option [value]="model.model">{{model.model}}</option>
                             }
-                            }@if (question.question.split(" ").includes("Version")) {
-                            @for (version of dropdowns.version; track $index) {
-                            <option [value]="version.version">{{version.version}}</option>
-                            }
                             }@else {
                             @for (value of dropdowns.const[question.question]; track $index) {
                             <option [value]="value">{{value}}</option>
@@ -35,7 +31,7 @@
                         @if ((showError && !formGroup.get(question._id)?.valid) || (!formGroup.get(question._id)?.valid
                         && (formGroup.get(question._id)?.dirty ||
                         formGroup.get(question._id)?.touched))) {
-                        <div class="text-red-600 text-sm"><small>
+                        <div class="text-sm text-red-600"><small>
                                 This field is required.
                             </small></div>
                         }
@@ -52,7 +48,7 @@
                         @if ((showError && !formGroup.get(question._id)?.valid) || (!formGroup.get(question._id)?.valid
                         && (formGroup.get(question._id)?.dirty ||
                         formGroup.get(question._id)?.touched))) {
-                        <div class="text-red-600 text-sm"><small>
+                        <div class="text-sm text-red-600"><small>
                                 This field is required.
                             </small></div>
                         }
@@ -62,15 +58,15 @@
 
                 </div>
                 <div class='flex justify-between sm:text-xl'>
-                    @if ($index === 0) {<button class="btn-fill-black flex gap-2 items-center" (click)="goBack()"><img
+                    @if ($index === 0) {<button class="flex items-center gap-2 btn-fill-black" (click)="goBack()"><img
                             src="assets/leftBlack.png" alt="">Back</button>}
-                    @if ($index > 0) {<button class="btn-fill-black flex gap-2 items-center" matStepperPrevious><img
+                    @if ($index > 0) {<button class="flex items-center gap-2 btn-fill-black" matStepperPrevious><img
                             src="assets/leftBlack.png" alt=""> Previous</button>}
-                    @if ($index < formGroups.length - 1) {<button class="btn-fill-sun flex gap-2 items-center"
+                    @if ($index < formGroups.length - 1) {<button class="flex items-center gap-2 btn-fill-sun"
                         matStepperNext (click)="formGroup.invalid ? enableError():disableError()">Next <img
                             src="assets/rightWhite.png" alt=""></button>}
                         @if ($index === formGroups.length - 1){
-                        <button class="btn-fill-sun flex gap-2 items-center"
+                        <button class="flex items-center gap-2 btn-fill-sun"
                             (click)="formGroup.invalid ? enableError():openDialog()">Done <img
                                 src="assets/rightWhite.png" alt=""></button>
                         }

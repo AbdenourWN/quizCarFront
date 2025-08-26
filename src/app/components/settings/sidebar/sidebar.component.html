@@ -1,5 +1,5 @@
 <div class="min-[350px]:text-xl text-lg flex flex-col font-bold justify-between h-full bg-[#E6E6E6]">
-    <div class="mx-auto flex flex-col  gap-2 mt-4 h-full">
+    <div class="flex flex-col h-full gap-2 mx-auto mt-4">
         @if(user?.role?.role==="admin"){<li
             [className]="'flex py-3 min-[350px]:w-48 w-40 rounded-xl px-4' + (getUrl() === '/settings' ? ' bg-[#FCC822]' : '')">
             <div class="flex gap-2 items-center hover:translate-x-1.5 hover:duration-200 hover:ease-in-out">
@@ -37,14 +37,6 @@
 
                 <img src="assets/model.png" class="w-fit h-fit" alt="">
                 <a [routerLink]="['/settings/models']">Models</a>
-            </div>
-        </li>}
-        @if(permissions?.version?.Post || permissions?.version?.Patch || permissions?.version?.Delete){<li
-            [className]="'flex py-3 min-[350px]:w-48 w-40 rounded-xl px-4' + (getUrl() === '/settings/versions' ? ' bg-[#FCC822]' : '')">
-            <div class="flex gap-2 items-center hover:translate-x-1.5 hover:duration-200 hover:ease-in-out">
-
-                <img src="assets/version.png" class="w-fit h-fit" alt="">
-                <a [routerLink]="['/settings/versions']">Versions</a>
             </div>
         </li>}
         <li

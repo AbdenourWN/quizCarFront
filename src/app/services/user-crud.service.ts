@@ -102,7 +102,7 @@ export class UserCRUDService {
         error.error
       );
     } else {
-      console.error('Server-Side-Error: ', error.error);
+      alert(error.error.error)
     }
     return throwError(
       () =>

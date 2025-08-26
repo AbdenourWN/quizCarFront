@@ -42,12 +42,7 @@ export class QuestionService {
     });
     return questions;
   }
-  getFastQuestions() {
-    let options = this.getStandardOptions();
-    return this.http
-      .get('http://localhost:3000/api/question/fast', options)
-      .pipe(catchError(this.handleError));
-  }
+
 
   private handleError(error: HttpErrorResponse) {
     if (error.status === 0) {

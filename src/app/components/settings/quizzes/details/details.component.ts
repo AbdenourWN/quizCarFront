@@ -37,23 +37,15 @@ export class DetailsComponent implements OnInit {
   ) {}
   questions: any[] = [];
   ngOnInit(): void {
-    if (this.data.type === 'Slow') {
-      this.questionService.watch().subscribe(
-        (res) => {
-          this.questions = res;
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
-      console.log('slow');
-      this.questionService.getQuestions();
-    } else {
-      console.log('fast');
-      this.questionService.getFastQuestions().subscribe(
-        (res: any) => (this.questions = res),
-        (err) => console.log(err)
-      );
-    }
+    this.questionService.watch().subscribe(
+      (res) => {
+        this.questions = res;
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+
+    this.questionService.getQuestions();
   }
 }

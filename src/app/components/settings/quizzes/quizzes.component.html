@@ -1,5 +1,5 @@
 @if(thisUser){@if(permissions?.Delete){
-<div class="flex gap-3 items-center text-lg text-gray-400 mb-10">
+<div class="flex items-center gap-3 mb-10 text-lg text-gray-400">
     <button (click)="switchMine()"
         [className]="quizPage==='My Quizzes' ? 'text-black font-bold rounded-2xl px-2 bg-slate-200 shadow-lg':''">
         My Quizzes
@@ -9,7 +9,7 @@
         All Quizzes
     </button>
 </div>}
-<div class="flex flex-col justify-between sm:gap-20 gap-5 pr-3">
+<div class="flex flex-col justify-between gap-5 pr-3 sm:gap-20">
     <div class="@container mx-auto flex sm:flex-row flex-col xl:w-[1000px] w-full justify-between gap-10 items-center">
         <div class="flex @xl:w-96 relative border border-[#C1BBBB] rounded-full mx-auto justify-self-center">
             <input type="text" id="search" [(ngModel)]="searchBar"
@@ -40,12 +40,6 @@
                 </th>
                 <td mat-cell *matCellDef="let element"> {{element.name}} </td>
             </ng-container>
-            <ng-container matColumnDef="type">
-                <th *matHeaderCellDef mat-sort-header sortActionDescription="Sort by type">
-                    Type
-                </th>
-                <td mat-cell *matCellDef="let element"> {{element.type}} </td>
-            </ng-container>
             <ng-container matColumnDef="result">
                 <th *matHeaderCellDef mat-sort-header sortActionDescription="Sort by result">
                     Result
@@ -64,8 +58,8 @@
                 <th *matHeaderCellDef>
                     Actions
                 </th>
-                <td mat-cell *matCellDef="let element" class="flex-1 justify-center items-center">
-                    <div class=" w-full h-full flex justify-center gap-2">
+                <td mat-cell *matCellDef="let element" class="items-center justify-center flex-1">
+                    <div class="flex justify-center w-full h-full gap-2 ">
                         <button (click)="openDetails(element)">
                             <img src="assets/details.png" alt="edit">
                         </button>
@@ -78,6 +72,13 @@
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" [colSpan]="displayedColumns.length">
+                    <div class="flex items-center justify-center h-24 text-lg text-gray-500">
+                        No quizzes found.
+                    </div>
+                </td>
+            </tr>
         </table>
     </div>
     <mat-paginator class="container mx-auto xl:w-[1000px] mt-10 sm:mt-0" [length]="length" [pageSize]="pageSize"

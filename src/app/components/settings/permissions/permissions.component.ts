@@ -173,7 +173,7 @@ export class PermissionsComponent implements OnInit, AfterViewInit {
     const filterValue = this.searchBar.trim().toLowerCase();
     // Filter the roles based on the name containing the input value
     this.permissionSearch = this.permissions.filter((permission) =>
-      permission.feature.toLowerCase().includes(filterValue)
+      permission.role.toLowerCase().includes(filterValue)
     );
     this.index = 0;
     this.length = this.permissionSearch.length;

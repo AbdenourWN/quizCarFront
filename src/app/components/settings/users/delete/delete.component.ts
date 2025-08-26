@@ -28,6 +28,7 @@ export class DeleteComponent {
         this.dialog.closeAll();
       },
       (err) => {
+        this.dialog.closeAll();
         console.log(err);
       }
     );

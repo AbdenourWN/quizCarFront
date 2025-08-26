@@ -20,16 +20,10 @@ export class StartQuizComponent {
   @Input() quizPage: any;
   @Output() quizPageChange = new EventEmitter<any>();
   @Output() quiz = new EventEmitter<any>();
-  type = 'Slow';
-  changeType = (event:Event) => {
-    const inputElement = event.target as HTMLInputElement;
-    if (this.type === 'Fast' && inputElement.id !=="Fast" ) this.type = 'Slow';
-    else if (this.type === 'Slow'&& inputElement.id !=="Slow") this.type = 'Fast';
-  };
   onSubmit() {
     if (this.quizName.valid) {
       this.showError = false;
-      this.quiz.emit({ name: this.quizName.value, type: this.type });
+      this.quiz.emit({ name: this.quizName.value });
       this.quizPageChange.emit(2);
     } else {
       this.showError = true;

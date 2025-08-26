@@ -13,7 +13,6 @@ import {
   MatDialogTitle,
 } from '@angular/material/dialog';
 import { ModelService } from '../../../../services/model.service';
-import { VersionService } from '../../../../services/version.service';
 import { PermissionService } from '../../../../services/permission.service';
 
 export interface DialogDataPermission {

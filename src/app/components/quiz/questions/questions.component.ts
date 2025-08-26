@@ -16,11 +16,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { ResultComponent } from '../result/result.component';
 import { QuestionService } from '../../../services/question.service';
 import { BrandService } from '../../../services/brand.service';
-import { Version, VersionService } from '../../../services/version.service';
 import { Model, ModelService } from '../../../services/model.service';
 import { error } from 'console';
 import { response } from 'express';
 import { UserService } from '../../../services/user.service';
+import { LoadingDialogComponent } from '../../loading/loading-dialog-component';
 
 @Component({
   selector: 'questions',
@@ -44,7 +44,6 @@ export class QuestionsComponent implements OnInit {
     private questionService: QuestionService,
     private brandService: BrandService,
     private modelService: ModelService,
-    private versionService: VersionService,
     private http: HttpClient,
     private userService: UserService
   ) {}
@@ -54,76 +53,21 @@ export class QuestionsComponent implements OnInit {
   dropdowns: any = {
     brand: [],
     model: [],
-    version: [],
     const: {
       Energie: [
         'Essence',
+        'Hybride',
         'Diesel',
-        'Hybride essence',
-        'Hybride diesel',
         'Electrique',
+        'Hybride essence',
+        'Hybride rechargeable essence',
+        'Hybride rechargeable diesel',
+        'Hybride diesel',
       ],
       'Boite vitesse': ['Manuelle', 'Automatique'],
-      'Couleur exterieur': [
-        'Noir',
-        'Blanc',
-        'Gris anthracite',
-        'Bleu',
-        'Marron',
-        'Gris argent',
-        'Rouge',
-        'Autre',
-        'Beige',
-        'Aubergine',
-        'Gris Shark',
-        'Vert',
-      ],
-      'Couleur interieur': [
-        'Noir',
-        'Marron',
-        'Gris',
-        'Beige',
-        'Rouge',
-        'Autre',
-      ],
-      'Puissance fiscale (cv)': [
-        4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 23, 24,
-        27, 30, 33, 43, 48,
-      ],
-      Transmission: ['Traction', 'Integrale', 'Propulsion'],
-      Carrosserie: [
-        'Compacte',
-        'SUV/4x4',
-        'Coupe',
-        'Berline',
-        'Citadine',
-        'Utilitaire',
-        'Monospace',
-        'Pick up',
-        'Autres',
-      ],
-      'Nombre de places': [2, 3, 4, 5, 6, 7, 8],
-      Condition: ['Presque Nouveau', 'Bon', 'Moyenne', 'Mal'],
-      'Nombre de portes': [2, 3, 4, 5],
-      Sallerie: [
-        'Cuir integral',
-        'Alcantara',
-        'Tissu',
-        'Similicuir',
-        'Cuir partiel',
-        'Velours',
-      ],
-      'Engine Volume': [
-        0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3,
-        1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7,
-        2.8, 2.9, 3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 4.0, 4.2,
-        4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 5.0, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8,
-        5.9, 6.0, 6.2, 6.3, 6.4, 6.7, 6.8, 7.3, 20.0,
-      ],
     },
   };
   models: any;
-  versions: any;
   @Input() quiz: any;
   @Input() quizPage: any;
   @Output() quizPageChange = new EventEmitter<any>();
@@ -135,30 +79,17 @@ export class QuestionsComponent implements OnInit {
       },
       (err) => console.log(err)
     );
-    if (this.quiz.type === 'Slow') {
-      this.questionService.getQuestions().subscribe(
-        (response) => {
-          this.questions = response;
-          this.createFormGroups();
-        },
-        (error: any) => {
-          alert(error.message);
-        }
-      );
-    } else {
-      this.questionService.getFastQuestions().subscribe(
-        (response) => {
-          this.questions = response;
-          this.createFormGroups();
-        },
-        (error: any) => {
-          alert(error.message);
-        }
-      );
-    }
+    this.questionService.getQuestions().subscribe(
+      (response) => {
+        this.questions = response;
+        this.createFormGroups();
+      },
+      (error: any) => {
+        alert(error.message);
+      }
+    );
     this.brandService.getBrands();
     this.modelService.getModels();
-    this.versionService.getVersions();
 
     this.brandService.watch().subscribe(
       (res) => {
@@ -173,15 +104,6 @@ export class QuestionsComponent implements OnInit {
     this.modelService.watch().subscribe(
       (res) => {
         this.models = res;
-      },
-      (error) => {
-        console.error(error);
-        alert(error);
-      }
-    );
-    this.versionService.watch().subscribe(
-      (res) => {
-        this.versions = res;
       },
       (error) => {
         console.error(error);
@@ -211,16 +133,6 @@ export class QuestionsComponent implements OnInit {
   modelChange(event: Event) {
     const model = event.target as HTMLInputElement;
     const modelId = model.value;
-    this.dropdowns.version = this.versions.filter((version: Version) => {
-      let id;
-      for (const m of this.dropdowns.model) {
-        if (modelId === m.model) {
-          id = m._id;
-          break;
-        }
-      }
-      return id === version.model;
-    });
   }
   enableError() {
     this.showError = true;
@@ -234,40 +146,72 @@ export class QuestionsComponent implements OnInit {
     const formGroupsAsObject = this.formGroups.map((formGroup) =>
       formGroup.getRawValue()
     );
+
     let quizQuestions: any[] = [];
-    let data: any[] = [];
-    formGroupsAsObject.forEach((element, i) => {
-      const keys = Object.keys(element);
-      keys.forEach((key, j) => {
-        var reg = /^\d+$/;
-        let num = parseFloat(element[key]);
-        const number = Math.ceil(num);
-        if (
-          !reg.test(element[key]) ||
-          isNaN(num) ||
-          element[key].trim() === ''
-        ) {
-          quizQuestions.push({ question: key, response: element[key] });
-          data.push(element[key]);
-        } else {
-          quizQuestions.push({ question: key, response: number });
-          data.push(number);
+
+    let predictionPayload: any = {};
+
+    let questionCounter = 0;
+    formGroupsAsObject.forEach((group) => {
+      const keys = Object.keys(group);
+
+      keys.forEach((questionId) => {
+        const questionText = this.questions[questionCounter].question;
+        const responseValue = group[questionId];
+
+        quizQuestions.push({ question: questionId, response: responseValue });
+
+        switch (questionText) {
+          case 'Marque':
+            predictionPayload.marque = responseValue;
+            break;
+          case 'Modele':
+            predictionPayload.modele = responseValue;
+            break;
+          case 'Puissance fiscale (cv)':
+            predictionPayload.puissance_fiscale = Number(responseValue);
+            break;
+          case 'Kilometrage':
+            predictionPayload.kilometrage = Number(responseValue);
+            break;
+          case 'Annee':
+            predictionPayload.annee = Number(responseValue);
+            break;
+          case 'Energie':
+            predictionPayload.energie = responseValue;
+            break;
+          case 'Boite vitesse':
+            predictionPayload.boite = responseValue;
+            break;
         }
+        questionCounter++;
       });
     });
+
+    console.log('Sending this payload to prediction API:', predictionPayload);
+
+    const loadingDialogRef = this.dialog.open(LoadingDialogComponent, {
+      disableClose: true, // Prevent the user from closing it
+    });
+
     this.http
-      .post(`http://127.0.0.1:5000/${this.quiz.type}`, {
-        data: data,
-      })
+      .post(
+        'https://car-price-api-vfb0.onrender.com/predict',
+        predictionPayload
+      )
       .subscribe(
         (res: any) => {
+
+          loadingDialogRef.close();
+
+          const predictedPrice = Math.ceil(res.predicted_price);
+
           this.dialog.open(ResultComponent, {
             data: {
-              price: Math.ceil(res.price),
+              price: predictedPrice,
               payload: {
                 name: this.quiz.name,
-                type: this.quiz.type,
-                result: Math.ceil(res.price),
+                result: predictedPrice,
                 quizQuestions: quizQuestions,
                 createdBy: this.thisUser.user._id,
               },
@@ -275,7 +219,13 @@ export class QuestionsComponent implements OnInit {
           });
         },
         (err) => {
-          console.log(err);
+
+          loadingDialogRef.close();
+
+          console.error('API Error:', err);
+          alert(
+            'Sorry, there was an error getting the price prediction. Please try again later.'
+          );
         }
       );
   }
