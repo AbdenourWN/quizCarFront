@@ -13,6 +13,7 @@ import {
   throwError,
 } from 'rxjs';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
+import { environment } from '../../environments/environment';
 
 export interface Role {
   _id?: string;
@@ -27,8 +28,10 @@ export class RoleService {
   public socket$!: WebSocketSubject<any>;
   private roles: Role[] = [];
 
+  private apiUrl = `${environment.apiUrl}/api/role`; 
+
   constructor(private storage: StorageService, private http: HttpClient) {
-    this.initWebSocket();
+    //this.initWebSocket();
   }
 
   watch(): Observable<Role[]> {
@@ -38,7 +41,7 @@ export class RoleService {
   getRoles() {
     let options = this.getStandardOptions();
     this.http
-      .get<Role[]>('http://localhost:3000/api/role', options)
+      .get<Role[]>(this.apiUrl, options)
       .pipe(catchError(this.handleError))
       .subscribe((res: any) => {
         this.roles = res;
@@ -48,7 +51,7 @@ export class RoleService {
 
   private initWebSocket() {
     const token = this.storage.getToken(); // Assuming you want to use the token later for authentication
-    const url = `ws://localhost:3000/api/role?token=${token}`;
+    const url = `ws://${environment.apiUrl}/api/role?token=${token}`;
     this.socket$ = webSocket(url);
     this.socket$.subscribe({
       next: (msg) => {
@@ -102,31 +105,31 @@ export class RoleService {
   getItsPermission() {
     let options = this.getStandardOptions();
     return this.http
-      .get<any>('http://localhost:3000/api/role/permissions', options)
+      .get<any>(this.apiUrl + '/permissions', options)
       .pipe(catchError(this.handleError));
   }
   getRole(id: string) {
     let options = this.getStandardOptions();
     return this.http
-      .get(`http://localhost:3000/api/role/${id}`, options)
+      .get(this.apiUrl + `/${id}`, options)
       .pipe(catchError(this.handleError));
   }
   addRole(payload: Role) {
     let options = this.getStandardOptions();
     return this.http
-      .post(`http://localhost:3000/api/role`, payload, options)
+      .post(this.apiUrl, payload, options)
       .pipe(catchError(this.handleError));
   }
   updateRole(id: string, payload: Role | null) {
     let options = this.getStandardOptions();
     return this.http
-      .patch(`http://localhost:3000/api/role/${id}`, payload, options)
+      .patch(this.apiUrl + `/${id}`, payload, options)
       .pipe(catchError(this.handleError));
   }
   deleteRole(id: string) {
     let options = this.getStandardOptions();
     return this.http
-      .delete(`http://localhost:3000/api/role/${id}`, options)
+      .delete(this.apiUrl + `/${id}`, options)
       .pipe(catchError(this.handleError));
   }
 }

@@ -12,6 +12,7 @@ import {
 import { Router } from '@angular/router';
 import { StorageService } from '../../../services/storage.service';
 import { UserService } from '../../../services/user.service';
+import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'sign-up',
   standalone: true,
@@ -24,7 +25,7 @@ export class SignUpComponent {
   error = false;
   showError = false;
   errorMsg = '';
-  private _signupUrl = 'http://localhost:3000/api/auth/signup';
+  private _signupUrl = `${environment.apiUrl}/api/auth/signup`;
 
   constructor(
     private http: HttpClient,

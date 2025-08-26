@@ -13,6 +13,7 @@ import {
   throwError,
 } from 'rxjs';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
+import { environment } from '../../environments/environment';
 export interface Model {
   _id?: string;
   brand?: string;
@@ -27,13 +28,15 @@ export class ModelService {
   private models: Model[] = [];
   public socket$!: WebSocketSubject<any>;
 
+  private apiUrl = `${environment.apiUrl}/api/model`; 
+
   constructor(private storage: StorageService, private http: HttpClient) {
-    this.initWebSocket();
+    //this.initWebSocket();
   }
   getItsPermission() {
     let options = this.getStandardOptions();
     return this.http
-      .get<any>('http://localhost:3000/api/model/permissions', options)
+      .get<any>(this.apiUrl + '/permissions', options)
       .pipe(catchError(this.handleError));
   }
   watch(): Observable<Model[]> {
@@ -43,7 +46,7 @@ export class ModelService {
   getModels() {
     let options = this.getStandardOptions();
     this.http
-      .get<Model[]>('http://localhost:3000/api/model', options)
+      .get<Model[]>(this.apiUrl, options)
       .pipe(catchError(this.handleError))
       .subscribe((res: any) => {
         this.models = res;
@@ -53,7 +56,7 @@ export class ModelService {
 
   private initWebSocket() {
     const token = this.storage.getToken(); // Assuming you want to use the token later for authentication
-    const url = `ws://localhost:3000/api/model?token=${token}`;
+    const url = `ws://${environment.apiUrl}/api/model?token=${token}`;
     this.socket$ = webSocket(url);
     this.socket$.subscribe({
       next: (msg) => {
@@ -107,25 +110,25 @@ export class ModelService {
   getModel(id: string) {
     let options = this.getStandardOptions();
     return this.http
-      .get(`http://localhost:3000/api/model/${id}`, options)
+      .get(this.apiUrl + `/${id}`, options)
       .pipe(catchError(this.handleError));
   }
   addModel(payload: Model) {
     let options = this.getStandardOptions();
     return this.http
-      .post(`http://localhost:3000/api/model`, payload, options)
+      .post(this.apiUrl, payload, options)
       .pipe(catchError(this.handleError));
   }
   updateModel(id: string, payload: Model | null) {
     let options = this.getStandardOptions();
     return this.http
-      .patch(`http://localhost:3000/api/model/${id}`, payload, options)
+      .patch(this.apiUrl + `/${id}`, payload, options)
       .pipe(catchError(this.handleError));
   }
   deleteModel(id: string) {
     let options = this.getStandardOptions();
     return this.http
-      .delete(`http://localhost:3000/api/model/${id}`, options)
+      .delete(this.apiUrl + `/${id}`, options)
       .pipe(catchError(this.handleError));
   }
 }

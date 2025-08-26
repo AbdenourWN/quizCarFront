@@ -1,5 +1,5 @@
 {
-  "proxy": "http://localhost:3000",
+  "proxy": "https://quizcarback.onrender.com",
   "name": "quiz-cars",
   "version": "0.0.0",
   "scripts": {

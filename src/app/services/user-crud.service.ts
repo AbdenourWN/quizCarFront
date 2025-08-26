@@ -19,6 +19,7 @@ import {
 } from 'rxjs/operators';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { BehaviorSubject, EMPTY, Observable, throwError } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface user {
   _id?: string;
@@ -37,8 +38,9 @@ export class UserCRUDService {
   private userSubject = new BehaviorSubject<user[]>([]);
   public socket$!: WebSocketSubject<any>;
 
+  private apiUrl = `${environment.apiUrl}/api/user`;
   constructor(private storage: StorageService, private http: HttpClient) {
-    this.initWebSocket();
+    //this.initWebSocket();
   }
 
   watch(): Observable<user[]> {
@@ -48,7 +50,7 @@ export class UserCRUDService {
   getUsers() {
     let options = this.getStandardOptions();
     this.http
-      .get<user[]>('http://localhost:3000/api/user', options)
+      .get<user[]>(this.apiUrl, options)
       .pipe(catchError(this.handleError))
       .subscribe((res: any) => {
         this.users = res; // Update the local users array
@@ -58,7 +60,7 @@ export class UserCRUDService {
 
   private initWebSocket() {
     const token = this.storage.getToken(); // Assuming you want to use the token later for authentication
-    const url = `ws://localhost:3000/api/user?token=${token}`;
+    const url = `ws://${environment.apiUrl}/api/user?token=${token}`;
     this.socket$ = webSocket(url);
     this.socket$.subscribe({
       next: (msg) => {
@@ -102,7 +104,7 @@ export class UserCRUDService {
         error.error
       );
     } else {
-      alert(error.error.error)
+      alert(error.error.error);
     }
     return throwError(
       () =>
@@ -112,23 +114,30 @@ export class UserCRUDService {
   getItsPermission() {
     let options = this.getStandardOptions();
     return this.http
-      .get<any>('http://localhost:3000/api/user/permissions', options)
+      .get<any>(
+        this.apiUrl + '/permissions',
+        options
+      )
       .pipe(catchError(this.handleError));
   }
   getUser(id: string) {
     let options = this.getStandardOptions();
     return this.http
-      .get(`http://localhost:3000/api/user/${id}`, options)
+      .get(this.apiUrl + `/${id}`, options)
       .pipe(catchError(this.handleError));
   }
   addUser(payload: any) {
     let options = this.getStandardOptions();
-    return this.http.post(`http://localhost:3000/api/user`, payload, options);
+    return this.http.post(
+      this.apiUrl,
+      payload,
+      options
+    );
   }
   updateUser(id: string, payload: user | null) {
     let options = this.getStandardOptions();
     return this.http.patch(
-      `http://localhost:3000/api/user/${id}`,
+      this.apiUrl + `/${id}`,
       payload,
       options
     );
@@ -136,7 +145,7 @@ export class UserCRUDService {
   updateOldUser(id: string, payload: user | null) {
     let options = this.getStandardOptions();
     return this.http.patch(
-      `http://localhost:3000/api/user/me/${id}`,
+      this.apiUrl + `/me/${id}`,
       payload,
       options
     );
@@ -144,7 +153,7 @@ export class UserCRUDService {
   deleteUser(id: string) {
     let options = this.getStandardOptions();
     return this.http
-      .delete(`http://localhost:3000/api/user/${id}`, options)
+      .delete(this.apiUrl + `/${id}`, options)
       .pipe(catchError(this.handleError));
   }
   updateUserSubject(user: user) {

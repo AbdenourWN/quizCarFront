@@ -13,6 +13,7 @@ import {
   throwError,
 } from 'rxjs';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
+import { environment } from '../../environments/environment';
 
 export interface Brand {
   _id?: string;
@@ -27,8 +28,10 @@ export class BrandService {
   private brandSubject = new BehaviorSubject<Brand[]>([]);
   public socket$!: WebSocketSubject<any>;
 
+  private apiUrl = `${environment.apiUrl}/api/brand`; 
+
   constructor(private storage: StorageService, private http: HttpClient) {
-    this.initWebSocket();
+    //this.initWebSocket();
   }
 
   watch(): Observable<Brand[]> {
@@ -38,7 +41,7 @@ export class BrandService {
   getBrands() {
     let options = this.getStandardOptions();
     this.http
-      .get<Brand[]>('http://localhost:3000/api/brand', options)
+      .get<Brand[]>(this.apiUrl, options)
       .pipe(catchError(this.handleError))
       .subscribe((res: any) => {
         this.brands = res;
@@ -48,12 +51,12 @@ export class BrandService {
   getItsPermission() {
     let options = this.getStandardOptions();
     return this.http
-      .get<any>('http://localhost:3000/api/brand/permissions', options)
+      .get<any>(this.apiUrl + '/permissions', options)
       .pipe(catchError(this.handleError));
   }
   private initWebSocket() {
     const token = this.storage.getToken(); // Assuming you want to use the token later for authentication
-    const url = `ws://localhost:3000/api/brand?token=${token}`;
+    const url = `ws://${environment.apiUrl}/api/brand?token=${token}`;
     this.socket$ = webSocket(url);
     this.socket$.subscribe({
       next: (msg) => {
@@ -107,25 +110,25 @@ export class BrandService {
   getBrand(id: string) {
     let options = this.getStandardOptions();
     return this.http
-      .get(`http://localhost:3000/api/brand/${id}`, options)
+      .get(this.apiUrl + `/${id}`, options)
       .pipe(catchError(this.handleError));
   }
   addBrand(payload: Brand) {
     let options = this.getStandardOptions();
     return this.http
-      .post(`http://localhost:3000/api/brand`, payload, options)
+      .post(this.apiUrl, payload, options)
       .pipe(catchError(this.handleError));
   }
   updateBrand(id: string, payload: Brand | null) {
     let options = this.getStandardOptions();
     return this.http
-      .patch(`http://localhost:3000/api/brand/${id}`, payload, options)
+      .patch(this.apiUrl + `/${id}`, payload, options)
       .pipe(catchError(this.handleError));
   }
   deleteBrand(id: string) {
     let options = this.getStandardOptions();
     return this.http
-      .delete(`http://localhost:3000/api/brand/${id}`, options)
+      .delete(this.apiUrl + `/${id}`, options)
       .pipe(catchError(this.handleError));
   }
 }

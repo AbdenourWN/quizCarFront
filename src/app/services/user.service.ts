@@ -3,6 +3,7 @@ import { StorageService } from './storage.service';
 import { BehaviorSubject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { response } from 'express';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +11,7 @@ import { response } from 'express';
 export class UserService {
   private userSubject: BehaviorSubject<any>;
   public user;
+  private apiUrl = `${environment.apiUrl}/api/user`;
 
   constructor(private storage: StorageService, private http: HttpClient) {
     this.userSubject = new BehaviorSubject<any>(null);
@@ -24,7 +26,9 @@ export class UserService {
       'Content-Type': 'application/json', // This is typically not needed for GET requests
     });
     this.http
-      .get('http://localhost:3000/api/user/me', { headers: headers })
+      .get(this.apiUrl + '/me', {
+        headers: headers,
+      })
       .subscribe(
         (response) => {
           this.userSubject.next(response);

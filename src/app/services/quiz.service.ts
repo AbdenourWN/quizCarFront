@@ -13,6 +13,7 @@ import {
   throwError,
 } from 'rxjs';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
+import { environment } from '../../environments/environment';
 
 export interface Quiz {
   _id?: string;
@@ -31,8 +32,10 @@ export class QuizService {
   public socket$!: WebSocketSubject<any>;
   private quizzes: Quiz[] = [];
 
+  private apiUrl = `${environment.apiUrl}/api/quiz`; 
+
   constructor(private storage: StorageService, private http: HttpClient) {
-    this.initWebSocket();
+    //this.initWebSocket();
   }
 
   watch(): Observable<Quiz[]> {
@@ -42,7 +45,7 @@ export class QuizService {
   getQuizzes() {
     let options = this.getStandardOptions();
     this.http
-      .get<Quiz[]>('http://localhost:3000/api/quiz', options)
+      .get<Quiz[]>(this.apiUrl , options)
       .pipe(catchError(this.handleError))
       .subscribe((res: any) => {
         this.quizzes = res;
@@ -52,12 +55,12 @@ export class QuizService {
   getItsPermission() {
     let options = this.getStandardOptions();
     return this.http
-      .get<any>('http://localhost:3000/api/quiz/permissions', options)
+      .get<any>(this.apiUrl + '/permissions', options)
       .pipe(catchError(this.handleError));
   }
   private initWebSocket() {
     const token = this.storage.getToken(); // Assuming you want to use the token later for authentication
-    const url = `ws://localhost:3000/api/quiz?token=${token}`;
+    const url = `ws://${environment.apiUrl}/api/quiz?token=${token}`;
     this.socket$ = webSocket(url);
     this.socket$.subscribe({
       next: (msg) => {
@@ -111,13 +114,13 @@ export class QuizService {
   getQuiz(id: string) {
     let options = this.getStandardOptions();
     return this.http
-      .get(`http://localhost:3000/api/quiz/${id}`, options)
+      .get(this.apiUrl + `/${id}`, options)
       .pipe(catchError(this.handleError));
   }
   getMyQuizzes(id: string) {
     let options = this.getStandardOptions();
     this.http
-      .get(`http://localhost:3000/api/quiz/me/${id}`, options)
+      .get(this.apiUrl + `/me/${id}`, options)
       .pipe(catchError(this.handleError))
       .subscribe((res: any) => {
         this.quizzes = res;
@@ -127,19 +130,19 @@ export class QuizService {
   addQuiz(payload: Quiz) {
     let options = this.getStandardOptions();
     return this.http
-      .post(`http://localhost:3000/api/quiz`, payload, options)
+      .post(this.apiUrl, payload, options)
       .pipe(catchError(this.handleError));
   }
   updateQuiz(id: string, payload: Quiz | null) {
     let options = this.getStandardOptions();
     return this.http
-      .patch(`http://localhost:3000/api/quiz/${id}`, payload, options)
+      .patch(this.apiUrl + `/${id}`, payload, options)
       .pipe(catchError(this.handleError));
   }
   deleteQuiz(id: string) {
     let options = this.getStandardOptions();
     return this.http
-      .delete(`http://localhost:3000/api/quiz/${id}`, options)
+      .delete(this.apiUrl + `/${id}`, options)
       .pipe(catchError(this.handleError));
   }
 }

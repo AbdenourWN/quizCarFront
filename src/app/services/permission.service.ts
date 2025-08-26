@@ -13,6 +13,7 @@ import {
   throwError,
 } from 'rxjs';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
+import { environment } from '../../environments/environment';
 
 export interface Permission {
   _id?: string;
@@ -31,8 +32,10 @@ export class PermissionService {
   private permissionSubject = new BehaviorSubject<Permission[]>([]);
   public socket$!: WebSocketSubject<any>;
   private permissions: Permission[] = [];
+
+  private apiUrl = `${environment.apiUrl}/api/permission`; 
   constructor(private storage: StorageService, private http: HttpClient) {
-    this.initWebSocket();
+    //this.initWebSocket();
   }
 
   watch(): Observable<Permission[]> {
@@ -42,7 +45,7 @@ export class PermissionService {
   getPermissions() {
     let options = this.getStandardOptions();
     this.http
-      .get<Permission[]>('http://localhost:3000/api/permission', options)
+      .get<Permission[]>(this.apiUrl, options)
       .pipe(catchError(this.handleError))
       .subscribe((res: any) => {
         this.permissions = res;
@@ -109,19 +112,19 @@ export class PermissionService {
   getPermission(id: string) {
     let options = this.getStandardOptions();
     return this.http
-      .get(`http://localhost:3000/api/permission/${id}`, options)
+      .get(this.apiUrl + `/${id}`, options)
       .pipe(catchError(this.handleError));
   }
   updatePermission(id: string, payload: Permission | null) {
     let options = this.getStandardOptions();
     return this.http
-      .patch(`http://localhost:3000/api/permission/${id}`, payload, options)
+      .patch(this.apiUrl + `/${id}`, payload, options)
       .pipe(catchError(this.handleError));
   }
   deletePermission(id: string) {
     let options = this.getStandardOptions();
     return this.http
-      .delete(`http://localhost:3000/api/permission/${id}`, options)
+      .delete(this.apiUrl + `/${id}`, options)
       .pipe(catchError(this.handleError));
   }
 }

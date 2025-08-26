@@ -7,12 +7,15 @@ import {
 import { Injectable } from '@angular/core';
 import { StorageService } from './storage.service';
 import { catchError, Observable, Subject, throwError } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class QuestionService {
   constructor(private storage: StorageService, private http: HttpClient) {}
+
+  private apiUrl = `${environment.apiUrl}/api/question`; 
   private getStandardOptions(): any {
     const token = this.storage.getToken();
     return {
@@ -29,13 +32,13 @@ export class QuestionService {
   getItsPermission() {
     let options = this.getStandardOptions();
     return this.http
-      .get<any>('http://localhost:3000/api/question/permissions', options)
+      .get<any>(this.apiUrl + '/permissions', options)
       .pipe(catchError(this.handleError));
   }
   getQuestions() {
     let options = this.getStandardOptions();
     const questions = this.http
-      .get('http://localhost:3000/api/question', options)
+      .get(this.apiUrl, options)
       .pipe(catchError(this.handleError));
     questions.subscribe((res) => {
       this.questionSubject.next(res);
@@ -61,7 +64,7 @@ export class QuestionService {
   getQuestion(id: string) {
     let options = this.getStandardOptions();
     return this.http
-      .get(`http://localhost:3000/api/question/${id}`, options)
+      .get(this.apiUrl + `/${id}`, options)
       .pipe(catchError(this.handleError));
   }
 }

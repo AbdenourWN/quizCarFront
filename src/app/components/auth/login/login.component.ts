@@ -10,6 +10,7 @@ import {
 import { Router } from '@angular/router';
 import { StorageService } from '../../../services/storage.service';
 import { UserService } from '../../../services/user.service';
+import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -36,7 +37,7 @@ export class LoginComponent {
   });
   @Input() changePage: any;
   @Input() login: any;
-  private _loginUrl = 'http://localhost:3000/api/auth/login';
+  private _loginUrl = `${environment.apiUrl}/api/auth/login`;
   loginUser() {
     if (this.loginForm.valid) {
       this.error = false;

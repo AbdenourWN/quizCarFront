@@ -6,11 +6,13 @@ import {
 import { Injectable } from '@angular/core';
 import { catchError, Observable, Subject, throwError } from 'rxjs';
 import { StorageService } from './storage.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FeatureService {
+  private apiUrl = `${environment.apiUrl}/api/feature`;
   constructor(private storage: StorageService, private http: HttpClient) {}
   private getStandardOptions(): any {
     const token = this.storage.getToken();
@@ -28,13 +30,13 @@ export class FeatureService {
   getItsPermission() {
     let options = this.getStandardOptions();
     return this.http
-      .get<any>('http://localhost:3000/api/feature/permissions', options)
+      .get<any>(this.apiUrl + '/permissions', options)
       .pipe(catchError(this.handleError));
   }
   getFeatures() {
     let options = this.getStandardOptions();
     const features = this.http
-      .get('http://localhost:3000/api/feature', options)
+      .get(this.apiUrl, options)
       .pipe(catchError(this.handleError));
     features.subscribe((res) => {
       this.featureSubject.next(res);
@@ -58,7 +60,7 @@ export class FeatureService {
   getFeature(id: string) {
     let options = this.getStandardOptions();
     return this.http
-      .get(`http://localhost:3000/api/feature/${id}`, options)
+      .get(this.apiUrl + `/${id}`, options)
       .pipe(catchError(this.handleError));
   }
 }

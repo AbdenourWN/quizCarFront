@@ -66,31 +66,31 @@ export class DashboardComponent implements OnInit {
     );
     this.featureService.getFeatures().subscribe(
       (res: any) => {
-        this.data[4].num = res.length;
+        this.data[3].num = res.length;
       },
       (err) => console.log(err)
     );
     this.permissionService.watch().subscribe(
       (res: any) => {
-        this.data[5].num = res.length;
+        this.data[4].num = res.length;
       },
       (err) => console.log(err)
     );
     this.questionService.getQuestions().subscribe(
       (res: any) => {
-        this.data[6].num = res.length;
+        this.data[5].num = res.length;
       },
       (err) => console.log(err)
     );
     this.quizService.watch().subscribe(
       (res: any) => {
-        this.data[7].num = res.length;
+        this.data[6].num = res.length;
       },
       (err) => console.log(err)
     );
     this.roleService.watch().subscribe(
       (res: any) => {
-        this.data[8].num = res.length;
+        this.data[7].num = res.length;
       },
       (err) => console.log(err)
     );
